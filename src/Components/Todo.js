@@ -44,7 +44,7 @@ const Todo = (props) => {
             secondary={new Date(timestamp).toLocaleString()}
           />
         </ListItem>
-        <button onClick={(e) => setOpen(true)}> Edit </button>
+        <button onClick={() => setOpen(true)}> Edit </button>
         <Button
           onClick={(event) =>
             db.collection("todos").doc(props.todo.id).delete()
