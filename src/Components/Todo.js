@@ -17,42 +17,47 @@ const Todo = (props) => {
   const [input, setInput] = useState("");
 
   const updateTodo = () => {
-    db.collection("todos").doc(props.todo.id).set({}, { merge: true });
+    db.collection("todos")
+      .doc(props.todo.id)
+      .set({ todo: input }, { merge: true });
     setOpen(false);
   };
 
   return (
     <>
-      <Modal open={open} onClose={(e) => setOpen(false)}>
-        <div>
-          <h1> I am Modal</h1>
-          <input
-            placeholder={props.todo.todo}
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-          />
-          <Button onClick={updateTodo}> Update Todo</Button>
-        </div>
-      </Modal>
+      <div className="todo">
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <div>
+            <h1>DO your Changes</h1>
+            <input
+              placeholder={props.todo.todo}
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+            />
+            <Button type="Submit" className="update-todo" onClick={updateTodo}>
+              Update Todo
+            </Button>
+          </div>
+        </Modal>
 
-      <List className="todo_list">
-        <ListItem>
-          <ListItemAvatar></ListItemAvatar>
-          <ListItemText
-            primary={props.todo.todo}
-            // secondary="March 17, 05:00 PM"
-            secondary={new Date(timestamp).toLocaleString()}
-          />
-        </ListItem>
-        <button onClick={() => setOpen(true)}> Edit </button>
-        <Button
-          onClick={(event) =>
-            db.collection("todos").doc(props.todo.id).delete()
-          }
-        >
-          <DeleteIcon style={{ color: "red" }} />
-        </Button>
-      </List>
+        <List className="todo_list">
+          <ListItem>
+            <ListItemAvatar></ListItemAvatar>
+            <ListItemText
+              primary={props.todo.todo}
+              // secondary="March 17, 05:00 PM"
+
+              secondary={new Date(timestamp).toLocaleString()}
+            />
+          </ListItem>
+          <Button onClick={() => setOpen(true)}> Edit </Button>
+          <Button
+            onClick={() => db.collection("todos").doc(props.todo.id).delete()}
+          >
+            <DeleteIcon style={{ color: "red" }} />
+          </Button>
+        </List>
+      </div>
     </>
   );
 };
